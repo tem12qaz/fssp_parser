@@ -10,9 +10,25 @@ from selenium.webdriver.common.by import By
 from google_sheets import add_to_table
 
 js_query = 'return document.documentElement.innerHTML'
+driver = ''
 
 
-def get_base64_captcha(driver, data):
+def get_base64_captcha(data):
+    global driver
+    options = webdriver.ChromeOptions()
+    options.add_argument("--disable-blink-features")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--no sandbox")
+    options.add_argument("--headless")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+    options.add_argument("start-maximized")
+    prefs = {"profile.managed_default_content_settings.images": 2}
+    options.add_experimental_option("prefs", prefs)
+    url = 'https://fssp.gov.ru/iss/iP'
+    driver = webdriver.Chrome(options=options)
+    driver.get(url)
     elem = driver.find_element(By.ID, "region_id_chosen")
     elem.find_element(By.CLASS_NAME, "chosen-search-input").send_keys("Все регионы")
     elem.find_elements(By.CLASS_NAME, "active-result")[-1].click()
@@ -36,7 +52,22 @@ def get_base64_captcha(driver, data):
             return captcha.get_attribute('src')
 
 
-def main(driver, captcha):
+def main_wrapper(captcha):
+    global driver
+    try:
+        captcha = main(captcha)
+    except:
+        pass
+    else:
+        if captcha:
+            return captcha
+    finally:
+        driver.close()
+        return None
+
+
+def main(captcha):
+    global driver
     output = []
 
     driver.find_element(By.ID, "captcha-popup-code").send_keys(captcha)

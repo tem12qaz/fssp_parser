@@ -10,7 +10,7 @@ app = Flask(__name__)
 def start():
     global driver
     data = request.data
-    return get_base64_captcha(driver, data)
+    return get_base64_captcha(data)
 
 
 @app.route("/jvvc67Vfcd6gy8vFJjv678v56f")
@@ -18,30 +18,12 @@ def process():
     global driver
     data = request.data
     try:
-        resp = main(driver, data)
+        resp = main(data)
         if resp:
             return resp
     except:
-        driver.get(url)
-        return False
-    else:
-        driver.get(url)
-        return True
+        pass
 
 
 if __name__ == '__main__':
-    options = webdriver.ChromeOptions()
-    options.add_argument("--disable-blink-features")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--no sandbox")
-    options.add_argument("--headless")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
-    options.add_argument("start-maximized")
-    prefs = {"profile.managed_default_content_settings.images": 2}
-    options.add_experimental_option("prefs", prefs)
-    url = 'https://fssp.gov.ru/iss/iP'
-    driver = webdriver.Chrome(options=options)
-    driver.get(url)
     app.run()
