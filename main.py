@@ -14,6 +14,7 @@ driver = ''
 
 
 def get_base64_captcha(data):
+    print('start')
     global driver
     options = webdriver.ChromeOptions()
     options.add_argument("--disable-blink-features")
@@ -45,6 +46,7 @@ def get_base64_captcha(data):
 
     while True:
         try:
+            print('wait')
             captcha = driver.find_element(By.ID, "capchaVisual")
         except:
             time.sleep(0.5)
