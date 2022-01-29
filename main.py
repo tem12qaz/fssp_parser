@@ -3,8 +3,8 @@ import time
 
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs4
-from openpyxl import workbook, Workbook
-from openpyxl import load_workbook
+#from openpyxl import workbook, Workbook
+#from openpyxl import load_workbook
 from selenium.webdriver.common.by import By
 
 from google_sheets import add_to_table
