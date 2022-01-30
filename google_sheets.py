@@ -19,7 +19,7 @@ def add_to_table(data):
     service.spreadsheets().values().batchUpdate(spreadsheetId=TABLE_ID, body={
         "valueInputOption": "USER_ENTERED",  # Данные воспринимаются, как вводимые пользователем (считается значение формул)
         "data": [
-            {"range": "list_2!A2:",
+            {"range": "list_2!A2:Z1000",
              "majorDimension": "ROWS",  # Сначала заполнять строки, затем столбцы
              "values": data}
         ]

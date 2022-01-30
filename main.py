@@ -9,6 +9,9 @@ from selenium.webdriver.common.by import By
 
 from google_sheets import add_to_table
 
+from pyvirtualdisplay import Display
+
+
 js_query = 'return document.documentElement.innerHTML'
 driver = ''
 
@@ -16,30 +19,40 @@ driver = ''
 def get_base64_captcha(data):
     print('start')
     global driver
-    options = webdriver.ChromeOptions()
-    options.add_argument("--disable-blink-features")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--no sandbox")
-    options.add_argument("--headless")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
-    options.add_argument("start-maximized")
-    prefs = {"profile.managed_default_content_settings.images": 2}
-    options.add_experimental_option("prefs", prefs)
+    global display
+    display = Display(visible=0, size=(1920, 1080))
+    display.start()
+    #options = webdriver.ChromeOptions()
+    #options.add_argument("--headless")
+    #options.add_argument("--no sandbox")
+    #options.add_argument("--disable-dev-shm-usage")
+    #path = './'
+    #options.add_argument("user-data-dir=" + path)
+    #options.add_argument("--disable-gpu")
+    #options.add_argument('--remote-debugging-port=9222')
+    #options.add_argument("--disable-blink-features")
+    #options.add_argument("--disable-blink-features=AutomationControlled")
+    #options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    #options.add_experimental_option('useAutomationExtension', False)
+    #options.add_argument("start-maximized")
+    #prefs = {"profile.managed_default_content_settings.images": 2}
+    #options.add_experimental_option("prefs", prefs)
     url = 'https://fssp.gov.ru/iss/iP'
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Firefox()
     driver.get(url)
+    time.sleep(2)
     elem = driver.find_element(By.ID, "region_id_chosen")
     elem.find_element(By.CLASS_NAME, "chosen-search-input").send_keys("Все регионы")
     elem.find_elements(By.CLASS_NAME, "active-result")[-1].click()
     f_name, l_name, parent = data[0].split(' ')
     date = data[1]
+    print(f_name, l_name, parent)
 
     driver.find_element(By.ID, "input01").send_keys(f_name)
     driver.find_element(By.ID, "input02").send_keys(l_name)
     driver.find_element(By.ID, "input05").send_keys(parent)
-    driver.find_element(By.ID, "input06").click()
+    #driver.find_element(By.ID, "input06").click()
+    time.sleep(1)
     driver.find_element(By.ID, "input06").send_keys(date)
 
     driver.find_element(By.ID, "btn-sbm").click()
@@ -47,6 +60,7 @@ def get_base64_captcha(data):
     while True:
         try:
             print('wait')
+            driver.save_screenshot('test.png')
             captcha = driver.find_element(By.ID, "capchaVisual")
         except:
             time.sleep(0.5)
@@ -56,39 +70,50 @@ def get_base64_captcha(data):
 
 def main_wrapper(captcha):
     global driver
+    global display
     try:
         captcha = main(captcha)
-    except:
-        pass
+    except Exception as e:
+        print(e)
+        import traceback
+        print(traceback.format_exc())
     else:
-        if captcha:
+        if captcha is not None:
             return captcha
     finally:
-        driver.close()
-        return None
+        driver.quit()
+        #driver.close()
+        display.stop()
+        return 'true'
 
 
 def main(captcha):
+    print('--')
     global driver
     output = []
-
+    print(captcha)
     driver.find_element(By.ID, "captcha-popup-code").send_keys(captcha)
-    driver.find_element(By.ID, "captcha-popup-code").click()
+    driver.find_element(By.ID, "ncapcha-submit").click()
 
-    time.sleep(1)
+    time.sleep(3)
 
     try:
+        #driver.find_element(By.ID, "captcha-popup-code")
         captcha = driver.find_element(By.ID, "capchaVisual")
+        #print(captcha)
     except:
         pass
     else:
+        print('src')
         return captcha.get_attribute('src')
 
     while True:
         resp = driver.page_source
         soup = bs4(resp, 'html.parser')
         result = soup.find('table', class_='list border table alt-p05')
+        print('--')
         if result:
+            #driver.save_screenshot('test.png')
             break
 
     results = result.find_all('tr')[1:]
@@ -96,7 +121,7 @@ def main(captcha):
         results = result.find_all('tr')[1:]
 
     results_pre = copy.copy(results)
-
+    #driver.save_screenshot('test.png')
     while True:
         try:
             next_btn = driver.find_element(by=By.XPATH, value="//*[contains(text(), 'Следующая')]")
@@ -159,9 +184,11 @@ def main(captcha):
             sud_name, phone = rows[7].get_text(strip=True, separator='|').split('|')
             data = (name, date, sp_n, sp_date, sud, '', '', '', '', '', '', '', ip_n, fssp_name, fssp_address, sud_name, sum, subject)
             output.append(data)
-
-    driver.close()
-
+    #driver.quit()
+    #driver.close()
+    #display.stop()
+    #driver.save_screenshot('test.png')  
+    print(output)
     head = ['ФИО', 'Дата рожд.', 'Место рождения', '№СП', 'Дата СП', 'Мировой суд', '№ ИП', 'ФССП Отдел', 'ФССП Адрес', 'ФИО СПИ', 'Сумма долга', 'Вид задолженности', 'Телефон']
 
     # output.insert(0, head)
@@ -195,3 +222,4 @@ def main(captcha):
     #         break
 
     add_to_table(output)
+    print('quit')

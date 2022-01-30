@@ -1,7 +1,7 @@
 from flask import Flask, request
 from selenium import webdriver
-
-from main import get_base64_captcha, main
+import json
+from main import get_base64_captcha, main_wrapper
 from logging.config import dictConfig
 # from config_logger import config
 #
@@ -28,23 +28,19 @@ dictConfig({
 app = Flask(__name__)
 
 
-@app.route("/ugUV876gbvuybhBVfcjh9t6tv")
+@app.route("/ugUV876gbvuybhBVfcjh9t6tv", methods=['POST'])
 def start():
     global driver
-    data = request.data
-    return get_base64_captcha(data)
+    data = json.loads(request.data.decode('utf-8'))
+    print(data)
+    return get_base64_captcha((data['fio'], data['date']))
 
 
-@app.route("/jvvc67Vfcd6gy8vFJjv678v56f")
+@app.route("/jvvc67Vfcd6gy8vFJjv678v56f", methods=['POST'])
 def process():
     global driver
-    data = request.data
-    try:
-        resp = main(data)
-        if resp:
-            return resp
-    except:
-        pass
+    data = json.loads(request.data.decode('utf-8'))
+    return main_wrapper(data['captcha'])
 
 
 if __name__ == '__main__':
