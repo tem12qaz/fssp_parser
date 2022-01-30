@@ -18,7 +18,7 @@ def add_to_table(data):
 
     rangeAll = '{0}!A2:Z1000'.format('list_2')
     body = {}
-    resultClear = service.spreadsheets().values().clear(spreadsheetId=spreadsheet_id, range=rangeAll,
+    resultClear = service.spreadsheets().values().clear(spreadsheetId=TABLE_ID, range=rangeAll,
                                                         body=body).execute()
 
     service.spreadsheets().values().batchUpdate(spreadsheetId=TABLE_ID, body={
