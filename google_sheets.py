@@ -16,6 +16,11 @@ def add_to_table(data):
     httpAuth = credentials.authorize(httplib2.Http())  # Авторизуемся в системе
     service = apiclient.discovery.build('sheets', 'v4', http=httpAuth)  # Выбираем работу с таблицами и 4 версию API
 
+    rangeAll = '{0}!A2:Z1000'.format('list_2')
+    body = {}
+    resultClear = service.spreadsheets().values().clear(spreadsheetId=spreadsheet_id, range=rangeAll,
+                                                        body=body).execute()
+
     service.spreadsheets().values().batchUpdate(spreadsheetId=TABLE_ID, body={
         "valueInputOption": "USER_ENTERED",  # Данные воспринимаются, как вводимые пользователем (считается значение формул)
         "data": [
