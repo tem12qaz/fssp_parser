@@ -45,7 +45,7 @@ def start():
     except:
         print(traceback.format_exc())
         return 'false'
-    return
+    return captcha
 
 
 @app.route("/jvvc67Vfcd6gy8vFJjv678v56f", methods=['POST'])
