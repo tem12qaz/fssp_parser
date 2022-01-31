@@ -99,6 +99,9 @@ def main(captcha):
     try:
         #driver.find_element(By.ID, "captcha-popup-code")
         captcha = driver.find_element(By.ID, "capchaVisual")
+        loader = driver.find_element(By.CLASS_NAME, "b-center-loader")
+        if captcha and loader:
+            raise ZeroDivisionError
         #print(captcha)
     except:
         pass
