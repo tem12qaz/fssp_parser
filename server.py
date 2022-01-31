@@ -1,4 +1,6 @@
-from flask import Flask, request
+import traceback
+
+from flask import Flask, request, render_template
 from selenium import webdriver
 import json
 from main import get_base64_captcha, main_wrapper
@@ -28,12 +30,22 @@ dictConfig({
 app = Flask(__name__)
 
 
+@app.route("/parse_fssp", methods=['POST'])
+def start():
+    return render_template('popup.html')
+
+
 @app.route("/ugUV876gbvuybhBVfcjh9t6tv", methods=['POST'])
 def start():
     global driver
     data = json.loads(request.data.decode('utf-8'))
     print(data)
-    return get_base64_captcha((data['fio'], data['date']))
+    try:
+        captcha = get_base64_captcha((data['fio'], data['date']))
+    except:
+        print(traceback.format_exc())
+        return 'false'
+    return
 
 
 @app.route("/jvvc67Vfcd6gy8vFJjv678v56f", methods=['POST'])
