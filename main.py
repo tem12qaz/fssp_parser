@@ -44,7 +44,7 @@ def get_base64_captcha(data):
     elem = driver.find_element(By.ID, "region_id_chosen")
     elem.find_element(By.CLASS_NAME, "chosen-search-input").send_keys("Все регионы")
     elem.find_elements(By.CLASS_NAME, "active-result")[-1].click()
-    f_name, l_name, parent = data[0].split(' ')
+    f_name, l_name, parent = data[0].replace("\t", '').split(' ')
     date = data[1]
     print(f_name, l_name, parent)
 
