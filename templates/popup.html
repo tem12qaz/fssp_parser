@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ФССП Парсерr</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h3 style="margin-top:5px; margin-bottom:7px; margin-right:1px">Поиск по ФССП</h3>
+<!--    <button type="button" style="margin-left:1px; margin-right:1px">Настроить выгрузку</button>-->
+    <div class="modal-header" id="input_div">
+      <form name="user_data" id="form">
+        <input name="fio" type="text" size="40" placeholder="ФИО" required>
+        <br>
+        <input name="date" type="text" size="40" placeholder="Дата рождения" style="margin-top:3px;" required>
+        <input type="button" id="find" value="Поиск" style="margin-top:5px;">
+      </form>
+    </div>
+    <div id="wait_div" hidden>
+      <img src="wait.gif" alt="wait" width="300"/>
+    </div>
+
+    <div id="captcha_div" hidden>
+      <img src="wait.gif" alt="captcha" id="captcha"/>
+      <form name="captcha_data" id="form_captcha">
+        <input name="captcha" type="text" size="15" required>
+        <br>
+        <input type="button" id="captcha_find" value="Отправить" style="margin-top:5px;">
+      </form>
+    </div>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+    <script type="text/javascript" src="script.js"></script>
+  </body>
+</html>
