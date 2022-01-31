@@ -78,11 +78,11 @@ def main_wrapper(captcha):
         import traceback
         print(traceback.format_exc())
     else:
+        print(captcha)
         if captcha is not None:
             return captcha
     finally:
         driver.quit()
-        #driver.close()
         display.stop()
         return 'true'
 
