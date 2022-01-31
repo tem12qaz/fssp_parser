@@ -40,7 +40,7 @@ document.querySelector("#captcha_find").onclick = function () {
     xhr.onreadystatechange = function() {//Вызывает функцию при смене состояния
         if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
             console.log(xhr.responseText);
-            if (xhr.responseText != 'empty'){
+            if (xhr.responseText == 'empty'){
                 alert('Дела не найдены')
                 document.getElementById('input_div').hidden = false;
                 document.getElementById('wait_div').hidden = true;
