@@ -30,7 +30,7 @@ dictConfig({
 app = Flask(__name__)
 
 
-@app.route("/parse_fssp", methods=['POST'])
+@app.route("/parse_fssp", methods=['GET'])
 def start_():
     return render_template('popup.html')
 
