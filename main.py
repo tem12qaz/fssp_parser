@@ -181,7 +181,7 @@ def main(captcha):
             fssp_name, fssp_address = rows[6].get_text(strip=True, separator='|').split('|')
 
             sud_name, phone = rows[7].get_text(strip=True, separator='|').split('|')
-            data = (name, date, sp_n, sp_date, sud, '', '', '', '', '', '', '', ip_n, fssp_name, fssp_address, sud_name, sum, subject)
+            data = (name.title(), date, sp_n, sp_date, sud, '', '', '', '', '', '', '', ip_n, fssp_name, fssp_address, sud_name.title(), sum, subject)
             output.append(data)
     #driver.quit()
     #driver.close()
