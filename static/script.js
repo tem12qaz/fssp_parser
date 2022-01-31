@@ -41,6 +41,11 @@ document.querySelector("#captcha_find").onclick = function () {
         if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
             console.log(xhr.responseText);
             if (xhr.responseText != 'true'){
+                alert('Дела не найдены')
+                document.getElementById('input_div').hidden = false;
+                document.getElementById('wait_div').hidden = true;
+            }
+            if (xhr.responseText != 'true'){
                 document.getElementById('captcha').setAttribute('src', xhr.responseText)
                 document.getElementById('captcha_div').hidden = false;
                 document.getElementById('wait_div').hidden = true;

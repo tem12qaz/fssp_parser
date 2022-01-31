@@ -109,11 +109,16 @@ def main(captcha):
         print('src')
         return captcha.get_attribute('src')
 
+    i = 0
     while True:
         resp = driver.page_source
         soup = bs4(resp, 'html.parser')
         result = soup.find('table', class_='list border table alt-p05')
         print('--')
+        i += 1
+        time.sleep(1)
+        if i == 10:
+            return 'empty'
         if result:
             #driver.save_screenshot('test.png')
             break
