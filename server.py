@@ -3,7 +3,7 @@ import traceback
 from flask import Flask, request, render_template
 from selenium import webdriver
 import json
-from main import get_base64_captcha, main_wrapper
+from main import get_base64_captcha, main_wrapper, captcha_wrapper
 from logging.config import dictConfig
 # from config_logger import config
 #
@@ -40,12 +40,7 @@ def start():
     global driver
     data = json.loads(request.data.decode('utf-8'))
     print(data)
-    try:
-        captcha = get_base64_captcha((data['fio'], data['date']))
-    except:
-        print(traceback.format_exc())
-        return 'false'
-    return captcha
+    return captcha_wrapper(data)
 
 
 @app.route("/jvvc67Vfcd6gy8vFJjv678v56f", methods=['POST'])

@@ -1,5 +1,6 @@
 import copy
 import time
+import traceback
 
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs4
@@ -14,6 +15,19 @@ from pyvirtualdisplay import Display
 
 js_query = 'return document.documentElement.innerHTML'
 driver = ''
+
+
+def captcha_wrapper(data):
+    global driver
+    global display
+    try:
+        captcha = get_base64_captcha((data['fio'], data['date']))
+    except:
+        print(traceback.format_exc())
+        driver.quit()
+        display.stop()
+        return 'false'
+    return captcha
 
 
 def get_base64_captcha(data):
