@@ -40,20 +40,22 @@ document.querySelector("#captcha_find").onclick = function () {
     xhr.onreadystatechange = function() {//Вызывает функцию при смене состояния
         if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
             console.log(xhr.responseText);
-            if (xhr.responseText != 'true'){
+            if (xhr.responseText != 'empty'){
                 alert('Дела не найдены')
                 document.getElementById('input_div').hidden = false;
                 document.getElementById('wait_div').hidden = true;
             }
-            if (xhr.responseText != 'true'){
-                document.getElementById('captcha').setAttribute('src', xhr.responseText)
-                document.getElementById('captcha_div').hidden = false;
-                document.getElementById('wait_div').hidden = true;
-            }
             else {
-//                document.getElementById('captcha_div').hidden = true;
-                document.getElementById('input_div').hidden = false;
-                document.getElementById('wait_div').hidden = true;
+                if (xhr.responseText != 'true'){
+                    document.getElementById('captcha').setAttribute('src', xhr.responseText)
+                    document.getElementById('captcha_div').hidden = false;
+                    document.getElementById('wait_div').hidden = true;
+                }
+                else {
+                    document.getElementById('captcha_div').hidden = true;
+                    document.getElementById('input_div').hidden = false;
+                    document.getElementById('wait_div').hidden = true;
+                }
             }
         }
     }
