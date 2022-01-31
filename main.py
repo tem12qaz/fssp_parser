@@ -78,7 +78,7 @@ def main_wrapper(captcha):
         import traceback
         print(traceback.format_exc())
     else:
-        if captcha is not None:
+        if captcha:
             print('captcha')
             return captcha
     driver.quit()
