@@ -39,7 +39,7 @@ document.querySelector("#captcha_find").onclick = function () {
 
     xhr.onreadystatechange = function() {//Вызывает функцию при смене состояния
         if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-            console.log(xhr.response);
+            console.log(xhr.responseText);
             if (xhr.responseText != 'true'){
                 document.getElementById('captcha').setAttribute('src', xhr.responseText)
                 document.getElementById('captcha_div').hidden = false;

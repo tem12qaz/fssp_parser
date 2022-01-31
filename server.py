@@ -52,7 +52,9 @@ def start():
 def process():
     global driver
     data = json.loads(request.data.decode('utf-8'))
-    return main_wrapper(data['captcha'])
+    result = main_wrapper(data['captcha'])
+    print(result)
+    return result
 
 
 if __name__ == '__main__':
